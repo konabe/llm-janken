@@ -5,7 +5,8 @@ AIプレイヤーの基底クラスと基本実装
 import os
 import random
 from abc import ABC, abstractmethod
-from typing import List, Optional
+from typing import List
+
 from ..game.engine import Choice
 
 
@@ -105,7 +106,7 @@ class LLMAIPlayer(AIPlayer):
 
 選択肢は以下の通りです：
 - rock (グー)
-- paper (パー) 
+- paper (パー)
 - scissors (チョキ)
 
 """
@@ -114,9 +115,14 @@ class LLMAIPlayer(AIPlayer):
         if self.game_history:
             history_text = "\n過去のゲーム履歴:\n"
             # 最新の履歴のみを使用
-            recent_history = self.game_history[-self.max_history :]
-            for i, (player_choice, ai_choice, result) in enumerate(recent_history, 1):
-                history_text += f"{i}. プレイヤー: {player_choice.name.lower()}, あなた: {ai_choice.name.lower()}, 結果: {result}\n"
+            recent_history = self.game_history[-self.max_history:]
+            for i, (player_choice, ai_choice, result) in enumerate(
+                recent_history, 1
+            ):
+                history_text += (
+                    f"{i}. プレイヤー: {player_choice.name.lower()}, "
+                    f"あなた: {ai_choice.name.lower()}, 結果: {result}\n"
+                )
             base_prompt += history_text + "\n"
 
         base_prompt += """
@@ -162,7 +168,8 @@ class LLMAIPlayer(AIPlayer):
             )
 
             # レスポンスから選択肢を抽出
-            choice_text = response.choices[0].message.content.strip().lower()
+            content = response.choices[0].message.content
+            choice_text = content.strip().lower() if content else ""
 
             # 文字列からChoiceに変換
             if "rock" in choice_text or "グー" in choice_text:
@@ -210,7 +217,8 @@ class LLMAIPlayer(AIPlayer):
                 temperature=0.8,
             )
 
-            message = response.choices[0].message.content.strip()
+            content = response.choices[0].message.content
+            message = content.strip() if content else "気合いだ！"
             # 不要なクォートを削除
             message = message.strip('"').strip("'")
             # メッセージが長すぎる場合は切り詰め

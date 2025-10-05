@@ -4,8 +4,9 @@ AIプレイヤーの包括的テスト
 
 import unittest
 from unittest.mock import patch
-from src.ai.player import AIPlayer, RandomAIPlayer, PatternAIPlayer
-from src.game.engine import Choice, GameResult
+
+from src.ai.player import PatternAIPlayer, RandomAIPlayer
+from src.game.engine import Choice
 
 
 class TestAIPlayer(unittest.TestCase):

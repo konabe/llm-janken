@@ -3,11 +3,12 @@ CLIインターフェースの包括的テスト
 """
 
 import unittest
-from unittest.mock import patch, MagicMock
 from io import StringIO
-from src.ui.cli import CLIInterface
+from unittest.mock import patch
+
 from src.ai.player import RandomAIPlayer
 from src.game.engine import Choice, GameResult
+from src.ui.cli import CLIInterface
 
 
 class TestCLIInterface(unittest.TestCase):

@@ -1,6 +1,7 @@
 from typing import Optional
+
+from ..ai.player import AIPlayer
 from ..game.engine import Choice, GameResult, RockPaperScissorsEngine
-from ..ai.player import AIPlayer, RandomAIPlayer
 
 
 class CLIInterface:
