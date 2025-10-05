@@ -27,5 +27,15 @@
       "args": ["-NoExit", "-Command", "chcp 65001"]
     }
   },
-  "git.useCommitInputAsStashMessage": true
+  "git.useCommitInputAsStashMessage": true,
+  "python.testing.unittestEnabled": true,
+  "python.testing.unittestArgs": [
+    "-v",
+    "-s",
+    "./tests",
+    "-p",
+    "test_*.py"
+  ],
+  "python.testing.pytestEnabled": false,
+  "python.testing.autoTestDiscoverOnSaveEnabled": true
 }
