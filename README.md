@@ -1,5 +1,11 @@
 # LLM じゃんけん
 
+[![CI/CD Pipeline](https://github.com/YOUR_USERNAME/llm-janken/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/YOUR_USERNAME/llm-janken/actions/workflows/ci-cd.yml)
+[![Quick Test](https://github.com/YOUR_USERNAME/llm-janken/actions/workflows/quick-test.yml/badge.svg)](https://github.com/YOUR_USERNAME/llm-janken/actions/workflows/quick-test.yml)
+[![Python 3.9-3.12](https://img.shields.io/badge/python-3.9%20|%203.10%20|%203.11%20|%203.12-blue)](https://www.python.org/downloads/)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 大規模言語モデル（LLM）を活用したじゃんけんゲーム。
 
 ## 概要
@@ -140,6 +146,60 @@ python -m unittest discover tests -v
 python-clean.bat main.py
 # PowerShell
 ./python-clean.ps1 main.py
+```
+
+## CI/CD パイプライン
+
+このプロジェクトでは GitHub Actions を使用して自動化された CI/CD パイプラインを実装しています。
+
+### 🔄 ワークフロー
+
+#### 1. **CI/CD Pipeline** (`ci-cd.yml`)
+- **トリガー**: プッシュ（main/master/develop ブランチ）、プルリクエスト
+- **テストマトリックス**: Python 3.9, 3.10, 3.11, 3.12
+- **品質チェック**: flake8 リント、Black フォーマッタ
+- **カバレッジ**: unittest + coverage レポート
+- **セキュリティ**: safety、bandit によるセキュリティスキャン
+- **依存関係**: 脆弱性チェック、古いパッケージ検出
+
+#### 2. **Quick Test** (`quick-test.yml`)
+- **トリガー**: プッシュ・プルリクエスト（軽量テスト）
+- **実行内容**: 基本テスト、アプリケーション起動テスト
+
+#### 3. **Environment Setup Test** (`setup-test.yml`)
+- **トリガー**: 手動実行、毎週月曜日
+- **実行内容**: 新規開発者向け環境セットアップテスト
+
+### 📊 ステータスバッジ
+
+プロジェクトの状態は以下のバッジで確認できます：
+- **CI/CD Pipeline**: 全体的なテスト・品質チェックステータス
+- **Quick Test**: 基本機能テストステータス  
+- **Python Support**: サポートするPythonバージョン
+- **Code Style**: Black フォーマッタ使用
+- **License**: MIT ライセンス
+
+### 🚀 デプロイメント
+
+- **自動リリース**: main ブランチへのプッシュ時に自動タグ作成
+- **リリースノート**: 変更内容とテスト結果を自動生成
+- **バージョニング**: `v2024.01.15-abc1234` 形式（日付 + コミットハッシュ）
+
+### 🛠️ ローカル開発での CI/CD テスト
+
+```bash
+# コード品質チェック
+flake8 src/ --count --select=E9,F63,F7,F82 --show-source --statistics
+black --check --diff src/ tests/
+
+# テスト実行（カバレッジ付き）
+coverage run -m unittest discover tests -v
+coverage report -m
+
+# セキュリティチェック
+pip install safety bandit
+safety check
+bandit -r src/
 ```
 
 ## アーキテクチャ
