@@ -11,9 +11,8 @@ from ..game.engine import Choice
 class AIPlayer(ABC):
     """AIプレイヤーの基底クラス"""
     
-    def __init__(self, name: str, difficulty: str = "medium"):
+    def __init__(self, name: str):
         self.name = name
-        self.difficulty = difficulty
         self.game_history: List[tuple] = []
     
     @abstractmethod
@@ -58,30 +57,20 @@ class PatternAIPlayer(AIPlayer):
 class LLMAIPlayer(AIPlayer):
     """OpenAI APIを使用してじゃんけんの手を決定するAIプレイヤー"""
     
-    def __init__(self, name: str, personality: str = "balanced", difficulty: str = "medium"):
-        super().__init__(name, difficulty)
+    def __init__(self, name: str):
+        super().__init__(name)
         # OpenAI クライアントは遅延初期化
         self._client = None
-        self.personality = personality
         self.max_history = 5  # 履歴の最大保持数
         # 環境変数からモデル名を取得（デフォルトは安価なgpt-4o-mini）
         self.model = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
     
     def _build_prompt(self) -> str:
         """LLM用のプロンプトを構築"""
-        # 性格設定
-        personality_prompts = {
-            "aggressive": "あなたは攻撃的で勝負強いじゃんけんプレイヤーです。相手を圧倒する戦略を好み、積極的に勝ちに行きます。",
-            "defensive": "あなたは慎重で守備的なじゃんけんプレイヤーです。相手の動きを観察し、安定した戦略を取ります。",
-            "random": "あなたは予測不可能で自由奔放なじゃんけんプレイヤーです。型にはまらない独創的な手を出します。",
-            "balanced": "あなたはバランス感覚に優れたじゃんけんプレイヤーです。状況に応じて柔軟に戦略を変更します。",
-            "analytical": "あなたは論理的で分析的なじゃんけんプレイヤーです。データとパターンを重視した戦略を立てます。"
-        }
-        
-        base_prompt = f"""
-{personality_prompts.get(self.personality, personality_prompts["balanced"])}
+        base_prompt = """
+あなたはじゃんけんプレイヤーです。次に出す手を決めてください。
 
-じゃんけんで次に出す手を決めてください。選択肢は以下の通りです：
+選択肢は以下の通りです：
 - rock (グー)
 - paper (パー) 
 - scissors (チョキ)

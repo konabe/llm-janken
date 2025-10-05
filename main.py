@@ -23,16 +23,12 @@ def main():
     # AIプレイヤーを初期化（OpenAI APIキーがあればLLM、なければランダム）
     if openai_key:
         print("🤖 OpenAI APIを使用したAIプレイヤーを使用します")
-        ai_player = LLMAIPlayer(
-            name="GPT じゃんけんマスター", 
-            personality="analytical",  # 分析的な性格
-            difficulty="hard"
-        )
+        ai_player = LLMAIPlayer(name="GPT じゃんけんマスター")
     else:
         print("⚠️  OpenAI API キーが設定されていません。ランダムAIを使用します。")
         print("📝 .env ファイルを作成してAPI キーを設定すると、より高度なAIと対戦できます。")
         print("例: cp .env.example .env")
-        ai_player = RandomAIPlayer(name="ランダムAI", difficulty="easy")
+        ai_player = RandomAIPlayer(name="ランダムAI")
     
     # 1回のゲームを実行
     cli.run_single_game(ai_player)

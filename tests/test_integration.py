@@ -223,7 +223,7 @@ class TestLLMIntegration(unittest.TestCase):
         with patch.dict(os.environ, {'OPENAI_API_KEY': 'test-key'}):
             # コンポーネント初期化
             engine = RockPaperScissorsEngine()
-            llm_player = LLMAIPlayer(name="GPTプレイヤー", personality="analytical")
+            llm_player = LLMAIPlayer(name="GPTプレイヤー")
             llm_player._client = mock_client
             stats = GameStatistics()
             
@@ -251,7 +251,7 @@ class TestLLMIntegration(unittest.TestCase):
         mock_client.chat.completions.create.return_value = mock_response
         
         with patch.dict(os.environ, {'OPENAI_API_KEY': 'test-key'}):
-            llm_player = LLMAIPlayer(name="学習AI", personality="analytical")
+            llm_player = LLMAIPlayer(name="学習AI")
             llm_player._client = mock_client
             
             # 履歴を追加

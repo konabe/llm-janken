@@ -16,12 +16,11 @@ class TestLLMAIPlayer(unittest.TestCase):
         """各テスト前の初期化"""
         # 環境変数をモック
         with patch.dict(os.environ, {'OPENAI_API_KEY': 'test-key'}):
-            self.player = LLMAIPlayer(name="テストAI", personality="balanced")
+            self.player = LLMAIPlayer(name="テストAI")
     
     def test_initialization(self) -> None:
         """初期化のテスト"""
         self.assertEqual(self.player.name, "テストAI")
-        self.assertEqual(self.player.personality, "balanced")
         self.assertEqual(self.player.max_history, 5)
         self.assertEqual(len(self.player.game_history), 0)
         # デフォルトモデルがgpt-4o-miniであることを確認
@@ -36,7 +35,7 @@ class TestLLMAIPlayer(unittest.TestCase):
     def test_build_prompt_no_history(self) -> None:
         """履歴なしでのプロンプト構築テスト"""
         prompt = self.player._build_prompt()
-        self.assertIn("バランス感覚に優れた", prompt)
+        self.assertIn("じゃんけんプレイヤー", prompt)
         self.assertIn("rock", prompt)
         self.assertIn("paper", prompt)
         self.assertIn("scissors", prompt)
@@ -53,17 +52,7 @@ class TestLLMAIPlayer(unittest.TestCase):
         self.assertIn("rock", prompt.lower())
         self.assertIn("paper", prompt.lower())
         self.assertIn("scissors", prompt.lower())
-    
-    def test_personality_prompts(self) -> None:
-        """各性格でのプロンプト生成テスト"""
-        personalities = ["aggressive", "defensive", "random", "balanced", "analytical"]
-        
-        for personality in personalities:
-            with patch.dict(os.environ, {'OPENAI_API_KEY': 'test-key'}):
-                player = LLMAIPlayer(name="テスト", personality=personality)
-                prompt = player._build_prompt()
-                self.assertIsInstance(prompt, str)
-                self.assertGreater(len(prompt), 0)
+
     
     def test_make_choice_rock_response(self) -> None:
         """OpenAI APIがrockを返す場合のテスト"""

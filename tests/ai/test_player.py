@@ -14,12 +14,11 @@ class TestAIPlayer(unittest.TestCase):
     def setUp(self):
         """テスト前の準備"""
         # AIPlayerは抽象クラスなので、RandomAIPlayerを使用してテスト
-        self.ai_player = RandomAIPlayer("TestAI", "easy")
+        self.ai_player = RandomAIPlayer("TestAI")
     
     def test_initialization(self):
         """初期化のテスト"""
         self.assertEqual(self.ai_player.name, "TestAI")
-        self.assertEqual(self.ai_player.difficulty, "easy")
         self.assertEqual(len(self.ai_player.game_history), 0)
     
     def test_record_game(self):
@@ -50,7 +49,7 @@ class TestRandomAIPlayer(unittest.TestCase):
     
     def setUp(self):
         """テスト前の準備"""
-        self.ai_player = RandomAIPlayer("RandomAI", "medium")
+        self.ai_player = RandomAIPlayer("RandomAI")
     
     def test_make_choice_returns_valid_choice(self):
         """make_choiceが有効な選択肢を返すかテスト"""
@@ -81,7 +80,7 @@ class TestPatternAIPlayer(unittest.TestCase):
     
     def setUp(self):
         """テスト前の準備"""
-        self.ai_player = PatternAIPlayer("PatternAI", "hard")
+        self.ai_player = PatternAIPlayer("PatternAI")
     
     def test_make_choice_with_no_history(self):
         """履歴なしでの選択テスト"""
