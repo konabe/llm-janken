@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 """
-ユニットテスト実行スクリプト
+ユニットテスト実行スクリプト（__pycache__無効化対応）
 """
 
 import sys
 import unittest
 import os
+
+# __pycache__ 生成を無効化
+os.environ['PYTHONDONTWRITEBYTECODE'] = '1'
 
 # プロジェクトルートをパスに追加
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))

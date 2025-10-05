@@ -102,6 +102,21 @@ source .venv/bin/activate
 
 # ゲームを実行
 python main.py
+
+# テスト実行（__pycache__ 無効化）
+# Windows PowerShell
+./test-clean.bat
+# Linux/Mac
+./test-clean.sh
+
+# 通常のテスト実行
+python -m unittest discover tests -v
+
+# __pycache__ を生成しないPython実行
+# Windows
+python-clean.bat main.py
+# PowerShell
+./python-clean.ps1 main.py
 ```
 
 ## アーキテクチャ

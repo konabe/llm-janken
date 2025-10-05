@@ -6,8 +6,9 @@
     "markdown": true,
     "python": true
   },
-  "python.defaultInterpreterPath": "./.venv/Scripts/python.exe",
+  "python.defaultInterpreterPath": "./.venv/Scripts/python.exe", 
   "python.terminal.activateEnvironment": true,
+  "python.terminal.executeInFileDir": false,
   "terminal.integrated.defaultProfile.windows": "PowerShell",
   "files.associations": {
     "*.md": "markdown"
