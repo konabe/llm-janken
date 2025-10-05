@@ -20,6 +20,10 @@ class AIPlayer(ABC):
         """AIの手を決定する（サブクラスで実装）"""
         pass
     
+    def get_psychological_message(self) -> str:
+        """心理戦メッセージを生成（サブクラスでオーバーライド可能）"""
+        return "さあ、勝負だ！"
+    
     def record_game(self, player_choice: Choice, ai_choice: Choice, result: str):
         """ゲーム履歴を記録"""
         self.game_history.append((player_choice, ai_choice, result))
@@ -30,6 +34,17 @@ class RandomAIPlayer(AIPlayer):
     def make_choice(self) -> Choice:
         """ランダムに手を選択"""
         return random.choice(list(Choice))
+    
+    def get_psychological_message(self) -> str:
+        """心理戦メッセージをランダムに選択"""
+        messages = [
+            "運任せでいくぞ！",
+            "予測不可能なのが私の強み！",
+            "何が出るかな？お楽しみに！",
+            "ランダムの力を見せてやる！",
+            "読めるものなら読んでみろ！"
+        ]
+        return random.choice(messages)
 
 class PatternAIPlayer(AIPlayer):
     """プレイヤーのパターンを学習するAIプレイヤー（将来実装）"""
@@ -52,6 +67,21 @@ class PatternAIPlayer(AIPlayer):
             return counter_choices[last_player_choice]
         else:
             return random.choice(list(Choice))
+    
+    def get_psychological_message(self) -> str:
+        """パターン分析に基づいた心理戦メッセージ"""
+        if len(self.game_history) == 0:
+            return "君のパターンを分析させてもらう..."
+        elif len(self.game_history) < 3:
+            return "データが集まってきた。面白い..."
+        else:
+            last_choice = self.game_history[-1][0]
+            messages = {
+                Choice.ROCK: "また同じ手を出すのかな？",
+                Choice.PAPER: "パターンが読めてきたぞ！",
+                Choice.SCISSORS: "次の手は予測済みだ！"
+            }
+            return messages.get(last_choice, "君の癖は見抜いた！")
 
 
 class LLMAIPlayer(AIPlayer):
@@ -140,3 +170,48 @@ class LLMAIPlayer(AIPlayer):
         except Exception as e:
             print(f"警告: OpenAI API エラー: {e}. ランダムに選択します。")
             return random.choice(list(Choice))
+    
+    def get_psychological_message(self) -> str:
+        """LLMを使って心理戦メッセージを生成"""
+        try:
+            # OpenAI クライアントの初期化
+            if self._client is None:
+                from openai import OpenAI
+                self._client = OpenAI()
+            
+            # 心理戦メッセージ用プロンプト
+            prompt = f"""
+あなたは {self.name} というじゃんけんAIです。
+これからじゃんけん勝負を始める前に、相手に心理的プレッシャーをかける短い一言を言ってください。
+
+要求：
+- 15文字以内の短いメッセージ
+- 挑発的だが品位を保った内容
+- じゃんけんに関連した内容
+
+例：「君の手は読めているよ」「勝負の時間だ！」
+"""
+            
+            response = self._client.chat.completions.create(
+                model=self.model,
+                messages=[{"role": "user", "content": prompt}],
+                max_tokens=50,
+                temperature=0.8
+            )
+            
+            message = response.choices[0].message.content.strip()
+            # メッセージが長すぎる場合は切り詰め
+            if len(message) > 20:
+                message = message[:17] + "..."
+            return message
+            
+        except Exception:
+            # APIエラーの場合はデフォルトメッセージ
+            fallback_messages = [
+                "勝負だ！",
+                "本気を見せる時だ",
+                "君の実力を見せてもらおう",
+                "面白くなりそうだ",
+                "負けないぞ！"
+            ]
+            return random.choice(fallback_messages)

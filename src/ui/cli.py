@@ -91,6 +91,11 @@ class CLIInterface:
         """1回のゲームを実行"""
         self.display_welcome()
         
+        # 心理戦メッセージを表示
+        psychological_msg = ai_player.get_psychological_message()
+        print(f"🤖 {ai_player.name}: 「{psychological_msg}」")
+        print()
+        
         player_choice = self.get_player_choice()
         if player_choice is None:
             self.display_goodbye()
