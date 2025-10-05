@@ -1,0 +1,63 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Git UTF-8 設定",
+      "type": "shell",
+      "command": "git",
+      "args": [
+        "config",
+        "--global",
+        "core.quotepath",
+        "false"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Git エンコーディング設定",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-c",
+        "git config --global i18n.commitencoding utf-8 && git config --global i18n.logoutputencoding utf-8"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Git 設定確認",
+      "type": "shell",
+      "command": "git",
+      "args": [
+        "config",
+        "--list"
+      ],
+      "options": {
+        "shell": {
+          "args": ["-c", "git config --list | grep -E '(encoding|quotepath)'"]
+        }
+      },
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    }
+  ]
+}
