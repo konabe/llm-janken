@@ -174,10 +174,10 @@ class LLMAIPlayer(AIPlayer):
     def get_psychological_message(self) -> str:
         """LLMを使って心理戦メッセージを生成"""
         try:
-            # OpenAI クライアントの初期化
-            if self._client is None:
-                from openai import OpenAI
-                self._client = OpenAI()
+            # APIキーが設定されていない場合は事前チェック
+            api_key = os.getenv("OPENAI_API_KEY")
+            if not api_key:
+                raise ValueError("OPENAI_API_KEY が設定されていません。")
             
             # 心理戦メッセージ用プロンプト
             prompt = f"""
@@ -192,7 +192,7 @@ class LLMAIPlayer(AIPlayer):
 例：「君の手は読めているよ」「勝負の時間だ！」
 """
             
-            response = self._client.chat.completions.create(
+            response = self.client.chat.completions.create(
                 model=self.model,
                 messages=[{"role": "user", "content": prompt}],
                 max_tokens=50,
@@ -200,18 +200,28 @@ class LLMAIPlayer(AIPlayer):
             )
             
             message = response.choices[0].message.content.strip()
+            # 不要なクォートを削除
+            message = message.strip('"').strip("'")
             # メッセージが長すぎる場合は切り詰め
             if len(message) > 20:
                 message = message[:17] + "..."
             return message
             
-        except Exception:
-            # APIエラーの場合はデフォルトメッセージ
+        except Exception as e:
+            # APIキー未設定の場合は静かに処理、その他のエラーは表示
+            if "OPENAI_API_KEY" in str(e):
+                pass  # APIキー未設定は想定内なので静かに処理
+            else:
+                print(f"デバッグ: 心理戦メッセージ生成エラー: {e}")
+            
+            # フォールバックメッセージを選択
             fallback_messages = [
                 "勝負だ！",
-                "本気を見せる時だ",
+                "本気を見せる時だ", 
                 "君の実力を見せてもらおう",
                 "面白くなりそうだ",
-                "負けないぞ！"
+                "負けないぞ！",
+                "覚悟はできたか？",
+                "手加減はしないぞ！"
             ]
             return random.choice(fallback_messages)
