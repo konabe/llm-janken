@@ -2,10 +2,11 @@
 統合テストスイート - 全モジュール連携テスト
 """
 
+import os
 import unittest
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 from src.game.engine import Choice, GameResult, RockPaperScissorsEngine
-from src.ai.player import RandomAIPlayer, PatternAIPlayer
+from src.ai.player import RandomAIPlayer, PatternAIPlayer, LLMAIPlayer
 from src.ui.cli import CLIInterface
 from src.stats.tracker import GameRecord, GameStatistics
 
@@ -207,6 +208,69 @@ class TestPerformance(unittest.TestCase):
         self.assertEqual(total_results, 100)
 
 
+class TestLLMIntegration(unittest.TestCase):
+    """LLM AI プレイヤーの統合テスト"""
+    
+    def test_llm_ai_game_integration(self):
+        """LLM AIプレイヤーとのゲーム統合テスト"""
+        # OpenAI APIレスポンスをモック
+        mock_response = MagicMock()
+        mock_response.choices[0].message.content = "rock"
+        mock_client = MagicMock()
+        mock_client.chat.completions.create.return_value = mock_response
+        
+        # 環境変数をモック
+        with patch.dict(os.environ, {'OPENAI_API_KEY': 'test-key'}):
+            # コンポーネント初期化
+            engine = RockPaperScissorsEngine()
+            llm_player = LLMAIPlayer(name="GPTプレイヤー", personality="analytical")
+            llm_player._client = mock_client
+            stats = GameStatistics()
+            
+            # ゲーム実行
+            player_choice = Choice.SCISSORS
+            ai_choice = llm_player.make_choice()
+            result = engine.determine_winner(player_choice, ai_choice)
+            
+            # 履歴記録
+            llm_player.record_game(player_choice, ai_choice, result.value)
+            record = GameRecord(player_choice, ai_choice, result, "2025-10-05 12:00:00")
+            stats.add_game(record)
+            
+            # 検証
+            self.assertEqual(ai_choice, Choice.ROCK)
+            self.assertEqual(result, GameResult.LOSE)  # SCISSORS vs ROCK
+            self.assertEqual(len(llm_player.game_history), 1)
+            self.assertEqual(stats.get_win_rate(), 0.0)
+    
+    def test_llm_ai_learning_from_history(self):
+        """LLM AIプレイヤーの履歴学習テスト"""
+        mock_response = MagicMock()
+        mock_response.choices[0].message.content = "paper"
+        mock_client = MagicMock()
+        mock_client.chat.completions.create.return_value = mock_response
+        
+        with patch.dict(os.environ, {'OPENAI_API_KEY': 'test-key'}):
+            llm_player = LLMAIPlayer(name="学習AI", personality="analytical")
+            llm_player._client = mock_client
+            
+            # 履歴を追加
+            llm_player.record_game(Choice.ROCK, Choice.PAPER, "LOSE")
+            llm_player.record_game(Choice.ROCK, Choice.SCISSORS, "WIN")
+            
+            # プロンプト構築確認
+            prompt = llm_player._build_prompt()
+            self.assertIn("過去のゲーム履歴", prompt)
+            self.assertIn("rock", prompt.lower())
+            
+            # 選択実行
+            choice = llm_player.make_choice()
+            self.assertEqual(choice, Choice.PAPER)
+            
+            # OpenAI API が呼ばれたことを確認
+            mock_client.chat.completions.create.assert_called()
+
+
 if __name__ == '__main__':
     # 全テストモジュールを実行
     test_modules = [
@@ -225,6 +289,7 @@ if __name__ == '__main__':
     suite.addTest(loader.loadTestsFromTestCase(TestCLIIntegration))
     suite.addTest(loader.loadTestsFromTestCase(TestErrorHandling))
     suite.addTest(loader.loadTestsFromTestCase(TestPerformance))
+    suite.addTest(loader.loadTestsFromTestCase(TestLLMIntegration))
     
     # 個別モジュールテストも追加
     for module in test_modules:

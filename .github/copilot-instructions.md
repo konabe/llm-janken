@@ -32,6 +32,7 @@ _This file should be updated as the project develops to reflect architecture, wo
 
 # 開発の進め方
 
+- 指示に従って、テストコードを含めてコーディングをしてください。
 - コーディングが終了したら、Problems タブを確認し、警告やエラーがないことを確認してください。
 - テストを実行してください。
 - テストが成功したら、コミットしてください。

@@ -10,8 +10,12 @@ AI は戦略的なゲームプレイを行い、解説を提供し、プレイ�
 
 ## 機能
 
-- LLM 対戦相手とのインタラクティブなじゃんけんゲーム
-- 多言語サポート（英語/日本語）
+- **🤖 OpenAI API 統合**: GPT-3.5-turbo を使用したインテリジェントなAI対戦相手
+- **🧠 多様なAI性格**: 攻撃的、守備的、分析的、バランス型など5種類の性格
+- **📚 学習機能**: ゲーム履歴から相手のパターンを学習し戦略を調整
+- **🌐 多言語サポート**: 英語/日本語の完全対応
+- **🎯 フォールバック機能**: OpenAI APIが利用不可時はランダムAIに自動切り替え
+- **📊 統計分析**: ゲーム履歴、勝率、選択パターンの詳細分析
 
 ## はじめに
 
@@ -50,12 +54,22 @@ pip install -r requirements.txt
 
 ### 設定
 
-環境設定をコピーして API キーを追加：
+#### OpenAI API キーの設定
 
 ```bash
+# 環境設定ファイルをコピー
 cp .env.example .env
-# .env ファイルを編集して LLM API の認証情報を追加
+
+# .env ファイルを編集してOpenAI API キーを設定
+# OPENAI_API_KEY=your_actual_api_key_here
 ```
+
+**重要**: OpenAI API キーを取得するには：
+1. [OpenAI Platform](https://platform.openai.com/) にアクセス
+2. アカウントを作成してAPI キーを生成
+3. `.env` ファイルの `OPENAI_API_KEY` に設定
+
+**注意**: API キーが設定されていない場合、ランダムAIプレイヤーが使用されます。
 
 ### 開発環境セットアップ（GitHub CLI）
 
@@ -92,10 +106,25 @@ python main.py
 
 ## アーキテクチャ
 
-- **ゲームエンジン**: コアじゃんけんロジックとルール実行
-- **LLM 統合**: AI プレイヤー戦略と自然言語インタラクション
-- **UI レイヤー**: コマンドラインインターフェース（Web UI 拡張可能）
-- **統計**: ゲーム履歴とパターン分析
+```
+src/
+├── game/           # ゲームエンジン - コアじゃんけんロジック
+│   └── engine.py   # Choice enum, GameResult, 勝敗判定
+├── ai/             # AIプレイヤー統合
+│   └── player.py   # RandomAI, PatternAI, LLMAIPlayer (OpenAI統合)
+├── ui/             # ユーザーインターフェース
+│   └── cli.py      # 多言語対応コマンドラインUI
+└── stats/          # 統計・分析
+    └── tracker.py  # ゲーム記録、勝率計算、パターン分析
+```
+
+### AIプレイヤーの種類
+
+| クラス | 説明 | 使用条件 |
+|--------|------|----------|
+| **LLMAIPlayer** | OpenAI GPT-3.5-turbo使用、5つの性格パターン | OpenAI API キー必須 |
+| **PatternAIPlayer** | プレイヤーのパターンを学習する基本AI | API キー不要 |
+| **RandomAIPlayer** | 完全ランダム選択のフォールバックAI | API キー不要 |
 
 ## 貢献
 
