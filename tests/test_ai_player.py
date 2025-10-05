@@ -63,7 +63,7 @@ class TestRandomAIPlayer(unittest.TestCase):
         
         # すべての選択肢が出現することを確認
         unique_choices = set(choices)
-        self.assertTrue(len(unique_choices) > 1, "選択肢に多様性がありません")
+        self.assertGreater(len(unique_choices), 1, "選択肢に多様性がありません")
     
     @patch('random.choice')
     def test_make_choice_uses_random(self, mock_random_choice):

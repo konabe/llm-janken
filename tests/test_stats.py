@@ -227,7 +227,6 @@ class TestGameStatistics(unittest.TestCase):
         # 統計計算（パフォーマンステスト）
         summary = self.stats.get_summary()
         frequency = self.stats.get_choice_frequency()
-        win_rate = self.stats.get_win_rate()
         
         # 基本的な正確性チェック
         self.assertEqual(summary['total_games'], 1000)
