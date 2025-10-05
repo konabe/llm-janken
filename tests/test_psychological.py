@@ -11,7 +11,7 @@ from src.game.engine import Choice
 
 class ConcreteAIPlayer(AIPlayer):
     """テスト用の具象AIPlayerクラス"""
-    
+
     def make_choice(self) -> Choice:
         return Choice.ROCK
 
@@ -38,7 +38,7 @@ class TestPsychologicalMessages(unittest.TestCase):
 
         self.assertEqual(message, "君の手は読めているよ")
 
-    @patch("openai.OpenAI")  
+    @patch("openai.OpenAI")
     def test_llm_ai_psychological_message_api_error(self, mock_openai):
         """LLM AIの心理戦メッセージAPIエラー時テスト"""
         # OpenAI APIでエラーを発生させる

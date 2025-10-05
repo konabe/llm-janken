@@ -11,7 +11,7 @@ from src.game.engine import Choice
 
 class ConcreteAIPlayer(AIPlayer):
     """テスト用の具象AIPlayerクラス"""
-    
+
     def make_choice(self) -> Choice:
         return Choice.ROCK
 
