@@ -24,6 +24,14 @@ class TestLLMAIPlayer(unittest.TestCase):
         self.assertEqual(self.player.personality, "balanced")
         self.assertEqual(self.player.max_history, 5)
         self.assertEqual(len(self.player.game_history), 0)
+        # デフォルトモデルがgpt-4o-miniであることを確認
+        self.assertEqual(self.player.model, "gpt-4o-mini")
+    
+    def test_custom_model(self) -> None:
+        """カスタムモデル設定のテスト"""
+        with patch.dict(os.environ, {'OPENAI_API_KEY': 'test-key', 'OPENAI_MODEL': 'gpt-3.5-turbo'}):
+            custom_player = LLMAIPlayer(name="カスタムAI")
+            self.assertEqual(custom_player.model, "gpt-3.5-turbo")
     
     def test_build_prompt_no_history(self) -> None:
         """履歴なしでのプロンプト構築テスト"""

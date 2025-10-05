@@ -64,6 +64,8 @@ class LLMAIPlayer(AIPlayer):
         self._client = None
         self.personality = personality
         self.max_history = 5  # 履歴の最大保持数
+        # 環境変数からモデル名を取得（デフォルトは安価なgpt-4o-mini）
+        self.model = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
     
     def _build_prompt(self) -> str:
         """LLM用のプロンプトを構築"""
@@ -108,7 +110,10 @@ class LLMAIPlayer(AIPlayer):
         if self._client is None:
             try:
                 from openai import OpenAI
-                self._client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+                api_key = os.getenv("OPENAI_API_KEY")
+                if not api_key:
+                    raise ValueError("OPENAI_API_KEY が設定されていません。")
+                self._client = OpenAI(api_key=api_key)
             except ImportError:
                 raise ImportError("openai パッケージがインストールされていません。'pip install openai' を実行してください。")
         return self._client
@@ -119,7 +124,7 @@ class LLMAIPlayer(AIPlayer):
             prompt = self._build_prompt()
             
             response = self.client.chat.completions.create(
-                model="gpt-3.5-turbo",
+                model=self.model,
                 messages=[
                     {"role": "system", "content": "あなたはじゃんけんの専門家です。与えられた指示に従って、適切な手を選択してください。"},
                     {"role": "user", "content": prompt}
