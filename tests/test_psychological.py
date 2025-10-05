@@ -2,10 +2,11 @@
 心理戦システムのテスト
 """
 
-import unittest
-from unittest.mock import patch, MagicMock
 import os
-from src.ai.player import LLMAIPlayer, AIPlayer
+import unittest
+from unittest.mock import MagicMock, patch
+
+from src.ai.player import AIPlayer, LLMAIPlayer
 from src.game.engine import Choice
 
 

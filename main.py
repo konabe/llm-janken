@@ -5,9 +5,12 @@ LLM じゃんけんゲーム - メインエントリーポイント
 """
 
 import os
+
 from dotenv import load_dotenv
-from src.ui.cli import CLIInterface
+
 from src.ai.player import LLMAIPlayer
+from src.ui.cli import CLIInterface
+
 
 def main():
     """メイン関数"""

@@ -4,9 +4,10 @@
 
 import os
 import unittest
-from unittest.mock import patch, MagicMock
-from src.game.engine import Choice, GameResult, RockPaperScissorsEngine
+from unittest.mock import MagicMock, patch
+
 from src.ai.player import LLMAIPlayer
+from src.game.engine import Choice, GameResult, RockPaperScissorsEngine
 from src.ui.cli import CLIInterface
 
 
