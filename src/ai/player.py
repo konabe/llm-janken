@@ -31,63 +31,6 @@ class AIPlayer(ABC):
         self.game_history.append((player_choice, ai_choice, result))
 
 
-class RandomAIPlayer(AIPlayer):
-    """ランダムに手を選ぶAIプレイヤー"""
-
-    def make_choice(self) -> Choice:
-        """ランダムに手を選択"""
-        return random.choice(list(Choice))
-
-    def get_psychological_message(self) -> str:
-        """心理戦メッセージをランダムに選択"""
-        messages = [
-            "運任せでいくぞ！",
-            "予測不可能なのが私の強み！",
-            "何が出るかな？お楽しみに！",
-            "ランダムの力を見せてやる！",
-            "読めるものなら読んでみろ！",
-        ]
-        return random.choice(messages)
-
-
-class PatternAIPlayer(AIPlayer):
-    """プレイヤーのパターンを学習するAIプレイヤー（将来実装）"""
-
-    def make_choice(self) -> Choice:
-        """現在は基本的なパターン分析（プレースホルダー）"""
-        if len(self.game_history) < 3:
-            return random.choice(list(Choice))
-
-        # 簡単なパターン分析: 最後の手の対策を出す
-        last_player_choice = self.game_history[-1][0]
-        counter_choices = {
-            Choice.ROCK: Choice.PAPER,
-            Choice.PAPER: Choice.SCISSORS,
-            Choice.SCISSORS: Choice.ROCK,
-        }
-
-        # 70%の確率で対策、30%でランダム
-        if random.random() < 0.7:
-            return counter_choices[last_player_choice]
-        else:
-            return random.choice(list(Choice))
-
-    def get_psychological_message(self) -> str:
-        """パターン分析に基づいた心理戦メッセージ"""
-        if len(self.game_history) == 0:
-            return "君のパターンを分析させてもらう..."
-        elif len(self.game_history) < 3:
-            return "データが集まってきた。面白い..."
-        else:
-            last_choice = self.game_history[-1][0]
-            messages = {
-                Choice.ROCK: "また同じ手を出すのかな？",
-                Choice.PAPER: "パターンが読めてきたぞ！",
-                Choice.SCISSORS: "次の手は予測済みだ！",
-            }
-            return messages.get(last_choice, "君の癖は見抜いた！")
-
-
 class LLMAIPlayer(AIPlayer):
     """OpenAI APIを使用してじゃんけんの手を決定するAIプレイヤー"""
 

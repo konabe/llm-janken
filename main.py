@@ -7,7 +7,7 @@ LLM じゃんけんゲーム - メインエントリーポイント
 import os
 from dotenv import load_dotenv
 from src.ui.cli import CLIInterface
-from src.ai.player import RandomAIPlayer, LLMAIPlayer
+from src.ai.player import LLMAIPlayer
 
 def main():
     """メイン関数"""
@@ -20,15 +20,15 @@ def main():
     # CLI インターフェースを初期化
     cli = CLIInterface(language='ja')
     
-    # AIプレイヤーを初期化（OpenAI APIキーがあればLLM、なければランダム）
+    # AIプレイヤーを初期化（OpenAI APIキーが必須）
     if openai_key:
         print("🤖 OpenAI APIを使用したAIプレイヤーを使用します")
         ai_player = LLMAIPlayer(name="GPT じゃんけんマスター")
     else:
-        print("⚠️  OpenAI API キーが設定されていません。ランダムAIを使用します。")
-        print("📝 .env ファイルを作成してAPI キーを設定すると、より高度なAIと対戦できます。")
+        print("⚠️  OpenAI API キーが設定されていません。")
+        print("📝 .env ファイルを作成してAPI キーを設定してください。")
         print("例: cp .env.example .env")
-        ai_player = RandomAIPlayer(name="ランダムAI")
+        return
     
     # 1回のゲームを実行
     cli.run_single_game(ai_player)

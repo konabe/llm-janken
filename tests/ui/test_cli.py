@@ -6,7 +6,7 @@ import unittest
 from io import StringIO
 from unittest.mock import patch
 
-from src.ai.player import RandomAIPlayer
+from src.ai.player import LLMAIPlayer
 from src.game.engine import Choice, GameResult
 from src.ui.cli import CLIInterface
 
@@ -172,7 +172,7 @@ class TestCLIInterface(unittest.TestCase):
     @patch("sys.stdout", new_callable=StringIO)
     def test_run_single_game_normal(self, mock_stdout, mock_input):
         """通常ゲーム実行のテスト"""
-        ai_player = RandomAIPlayer("TestAI")
+        ai_player = LLMAIPlayer("TestAI")
 
         # AI選択を固定
         with patch.object(ai_player, "make_choice", return_value=Choice.SCISSORS):
@@ -201,7 +201,7 @@ class TestCLIInterface(unittest.TestCase):
     @patch("sys.stdout", new_callable=StringIO)
     def test_run_single_game_quit(self, mock_stdout, mock_input):
         """終了選択時のゲーム実行テスト"""
-        ai_player = RandomAIPlayer("TestAI")
+        ai_player = LLMAIPlayer("TestAI")
 
         self.cli_ja.run_single_game(ai_player)
 

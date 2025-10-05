@@ -1,12 +1,19 @@
 """
-AIプレイヤーの包括的テスト
+AIプレイヤーの基底クラステスト（LLMAIPlayerのテストは別ファイル）
 """
 
 import unittest
-from unittest.mock import patch
+from unittest.mock import MagicMock
 
-from src.ai.player import PatternAIPlayer, RandomAIPlayer
+from src.ai.player import AIPlayer
 from src.game.engine import Choice
+
+
+class ConcreteAIPlayer(AIPlayer):
+    """テスト用の具象AIPlayerクラス"""
+    
+    def make_choice(self) -> Choice:
+        return Choice.ROCK
 
 
 class TestAIPlayer(unittest.TestCase):
@@ -14,8 +21,7 @@ class TestAIPlayer(unittest.TestCase):
 
     def setUp(self):
         """テスト前の準備"""
-        # AIPlayerは抽象クラスなので、RandomAIPlayerを使用してテスト
-        self.ai_player = RandomAIPlayer("TestAI")
+        self.ai_player = ConcreteAIPlayer("TestAI")
 
     def test_initialization(self):
         """初期化のテスト"""
@@ -46,115 +52,15 @@ class TestAIPlayer(unittest.TestCase):
         for i, expected in enumerate(games):
             self.assertEqual(self.ai_player.game_history[i], expected)
 
-
-class TestRandomAIPlayer(unittest.TestCase):
-    """RandomAIPlayerのテスト"""
-
-    def setUp(self):
-        """テスト前の準備"""
-        self.ai_player = RandomAIPlayer("RandomAI")
-
-    def test_make_choice_returns_valid_choice(self):
-        """make_choiceが有効な選択肢を返すかテスト"""
+    def test_make_choice_abstract(self):
+        """make_choiceメソッドの実装テスト"""
         choice = self.ai_player.make_choice()
-        self.assertIn(choice, [Choice.ROCK, Choice.PAPER, Choice.SCISSORS])
+        self.assertIsInstance(choice, Choice)
 
-    def test_make_choice_randomness(self):
-        """複数回の選択でランダム性があるかテスト"""
-        choices = [self.ai_player.make_choice() for _ in range(100)]
-
-        # すべての選択肢が出現することを確認
-        unique_choices = set(choices)
-        self.assertGreater(len(unique_choices), 1, "選択肢に多様性がありません")
-
-    @patch("random.choice")
-    def test_make_choice_uses_random(self, mock_random_choice):
-        """randomライブラリを使用しているかテスト"""
-        mock_random_choice.return_value = Choice.ROCK
-
-        choice = self.ai_player.make_choice()
-
-        mock_random_choice.assert_called_once()
-        self.assertEqual(choice, Choice.ROCK)
-
-
-class TestPatternAIPlayer(unittest.TestCase):
-    """PatternAIPlayerのテスト"""
-
-    def setUp(self):
-        """テスト前の準備"""
-        self.ai_player = PatternAIPlayer("PatternAI")
-
-    def test_make_choice_with_no_history(self):
-        """履歴なしでの選択テスト"""
-        choice = self.ai_player.make_choice()
-        self.assertIn(choice, [Choice.ROCK, Choice.PAPER, Choice.SCISSORS])
-
-    def test_make_choice_with_insufficient_history(self):
-        """履歴不足時の選択テスト"""
-        # 2回の履歴を追加（3回未満なのでランダム選択）
-        self.ai_player.record_game(Choice.ROCK, Choice.PAPER, "lose")
-        self.ai_player.record_game(Choice.SCISSORS, Choice.ROCK, "lose")
-
-        choice = self.ai_player.make_choice()
-        self.assertIn(choice, [Choice.ROCK, Choice.PAPER, Choice.SCISSORS])
-
-    @patch("random.random")
-    @patch("random.choice")
-    def test_make_choice_pattern_learning_counter(
-        self, mock_random_choice, mock_random
-    ):
-        """パターン学習での対策選択テスト"""
-        # 70%の確率で対策を選択するよう設定
-        mock_random.return_value = 0.5  # 0.7未満なので対策選択
-
-        # 3回の履歴を追加
-        for _ in range(3):
-            self.ai_player.record_game(Choice.ROCK, Choice.PAPER, "lose")
-
-        choice = self.ai_player.make_choice()
-
-        # 最後のプレイヤー選択（ROCK）に対する対策はPAPER
-        self.assertEqual(choice, Choice.PAPER)
-
-    @patch("random.random")
-    @patch("random.choice")
-    def test_make_choice_pattern_learning_random(self, mock_random_choice, mock_random):
-        """パターン学習でのランダム選択テスト"""
-        # 30%の確率でランダム選択するよう設定
-        mock_random.return_value = 0.8  # 0.7以上なのでランダム選択
-        mock_random_choice.return_value = Choice.SCISSORS
-
-        # 3回の履歴を追加
-        for _ in range(3):
-            self.ai_player.record_game(Choice.ROCK, Choice.PAPER, "lose")
-
-        choice = self.ai_player.make_choice()
-
-        mock_random_choice.assert_called_once()
-        self.assertEqual(choice, Choice.SCISSORS)
-
-    def test_counter_choice_mapping(self):
-        """対策選択のマッピングテスト"""
-        test_cases = [
-            (Choice.ROCK, Choice.PAPER),  # ROCKに対してPAPER
-            (Choice.PAPER, Choice.SCISSORS),  # PAPERに対してSCISSORS
-            (Choice.SCISSORS, Choice.ROCK),  # SCISSORSに対してROCK
-        ]
-
-        for player_choice, expected_counter in test_cases:
-            with self.subTest(player_choice=player_choice):
-                # 履歴をリセット
-                self.ai_player.game_history = []
-
-                # 3回同じ選択の履歴を追加
-                for _ in range(3):
-                    self.ai_player.record_game(player_choice, Choice.ROCK, "win")
-
-                # パターン学習をテスト（確実に対策選択になるよう設定）
-                with patch("random.random", return_value=0.5):
-                    choice = self.ai_player.make_choice()
-                    self.assertEqual(choice, expected_counter)
+    def test_default_psychological_message(self):
+        """デフォルト心理戦メッセージのテスト"""
+        message = self.ai_player.get_psychological_message()
+        self.assertEqual(message, "さあ、勝負だ！")
 
 
 if __name__ == "__main__":
