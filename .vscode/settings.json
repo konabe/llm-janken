@@ -24,7 +24,7 @@
   "terminal.integrated.profiles.windows": {
     "PowerShell (UTF-8)": {
       "source": "PowerShell",
-      "args": ["-NoExit", "-Command", "chcp 65001"]
+      "args": ["-NoExit", "-Command", "chcp 65001; $OutputEncoding = [System.Text.Encoding]::UTF8"]
     }
   },
   "git.useCommitInputAsStashMessage": true,
