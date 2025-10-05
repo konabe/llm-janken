@@ -145,9 +145,9 @@ class LLMAIPlayer(AIPlayer):
                 return Choice.SCISSORS
             else:
                 # 無効なレスポンスの場合はランダムにフォールバック
-                print(f"⚠️  AIの応答が無効でした: '{choice_text}'. ランダムに選択します。")
+                print(f"警告: AIの応答が無効でした: '{choice_text}'. ランダムに選択します。")
                 return random.choice(list(Choice))
                 
         except Exception as e:
-            print(f"⚠️  OpenAI API エラー: {e}. ランダムに選択します。")
+            print(f"警告: OpenAI API エラー: {e}. ランダムに選択します。")
             return random.choice(list(Choice))
