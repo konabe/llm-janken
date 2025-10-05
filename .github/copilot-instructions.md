@@ -28,9 +28,7 @@
   - AI 決定パターンのデバッグのための包括的ログを含める
   - 同期 CLI と潜在的な非同期 Web ゲームプレイの両方を計画
 
-_This file should be updated as the project develops to reflect architecture, workflows, and conventions._
-
-## � 開発環境の必須要件
+## 開発環境の必須要件
 
 ### Python仮想環境（venv）の使用必須
 - **すべての開発作業前に仮想環境をアクティベートすること**
@@ -43,7 +41,7 @@ _This file should be updated as the project develops to reflect architecture, wo
 - Pythonコマンドエラー → 仮想環境の再アクティベート
 - 詳細は `docs/dev-setup.md` を参照
 
-## �📋 重要リファレンス
+## 重要リファレンス
 
 - **[開発環境セットアップ](../docs/dev-setup.md)**: 仮想環境の詳細な設定方法とトラブルシューティング
 - **[コーディングルール](./coding-rules.md)**: 詳細なPythonコーディング規約、テスト規約、Git規約
