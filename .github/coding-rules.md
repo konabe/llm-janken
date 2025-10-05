@@ -162,6 +162,22 @@ class TestRockPaperScissorsEngine(unittest.TestCase):
 - `⚡` パフォーマンス改善
 - `🔧` 設定・ツール
 - `🎨` UI・スタイル改善
+- `📦` 依存関係・パッケージ管理
+- `🧹` コードクリーンアップ
+
+### 絵文字コミット環境設定
+Windows環境でGitHubに絵文字が正しく表示されるよう、以下の設定を推奨：
+
+```bash
+# ターミナルをUTF-8に設定
+chcp 65001
+
+# Git Unicode正規化設定
+git config --global core.precomposeunicode true
+git config --global core.quotepath false
+git config --global i18n.commitencoding utf-8
+git config --global i18n.logoutputencoding utf-8
+```
 
 ## 📦 依存関係管理
 
