@@ -1,7 +1,7 @@
 # LLM じゃんけん
 
-[![CI/CD Pipeline](https://github.com/YOUR_USERNAME/llm-janken/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/YOUR_USERNAME/llm-janken/actions/workflows/ci-cd.yml)
-[![Quick Test](https://github.com/YOUR_USERNAME/llm-janken/actions/workflows/quick-test.yml/badge.svg)](https://github.com/YOUR_USERNAME/llm-janken/actions/workflows/quick-test.yml)
+[![CI/CD Pipeline](https://github.com/konabe/llm-janken/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/konabe/llm-janken/actions/workflows/ci-cd.yml)
+[![Quick Test](https://github.com/konabe/llm-janken/actions/workflows/quick-test.yml/badge.svg)](https://github.com/konabe/llm-janken/actions/workflows/quick-test.yml)
 [![Python 3.9-3.12](https://img.shields.io/badge/python-3.9%20|%203.10%20|%203.11%20|%203.12-blue)](https://www.python.org/downloads/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
