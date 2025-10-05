@@ -19,7 +19,7 @@ pip-delete-this-directory.txt
 .env.production.local
 
 # IDE and editor files
-.vscode/settings.json
+# .vscode/settings.json  # プロジェクト設定として共有するためコメントアウト
 .idea/
 *.swp
 *.swo
