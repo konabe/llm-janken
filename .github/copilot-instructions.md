@@ -23,7 +23,7 @@ _This file should be updated as the project develops to reflect architecture, wo
 
 ### Python仮想環境（venv）の使用必須
 - **すべての開発作業前に仮想環境をアクティベートすること**
-- Windows: `.venv\Scripts\Activate.ps1` を実行
+- Windows: `.venv\Scripts\activate.bat` を実行
 - プロンプトに `(.venv)` が表示されることを必ず確認
 - `openai` パッケージなどの依存関係は仮想環境内にインストール済み
 
@@ -41,7 +41,7 @@ _This file should be updated as the project develops to reflect architecture, wo
 # 開発の進め方
 
 ## 🔧 開発前チェックリスト（必須）
-1. **仮想環境のアクティベート**: `.venv\Scripts\Activate.ps1` 実行
+1. **仮想環境のアクティベート**: `.venv\Scripts\activate.bat` 実行
 2. **プロンプト確認**: `(.venv)` が表示されているか
 3. **依存関係確認**: `pip list` でopenaiパッケージが表示されるか
 
@@ -58,4 +58,4 @@ _This file should be updated as the project develops to reflect architecture, wo
 ## ⚠️ よくあるエラーとその対処
 - **「openaiパッケージが見つからない」**: 仮想環境を確認・再アクティベート
 - **「Pythonコマンドが見つからない」**: 仮想環境の再アクティベート
-- **実行ポリシーエラー**: `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser`
+- **バッチファイルが動かない**: 管理者権限で実行するか、`setup-dev.bat`を使用

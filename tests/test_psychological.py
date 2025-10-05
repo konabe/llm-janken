@@ -89,7 +89,9 @@ class TestPsychologicalMessages(unittest.TestCase):
             "本気を見せる時だ",
             "君の実力を見せてもらおう",
             "面白くなりそうだ",
-            "負けないぞ！"
+            "負けないぞ！",
+            "覚悟はできたか？",
+            "手加減はしないぞ！"
         ]
         self.assertIn(message, fallback_messages)
     
