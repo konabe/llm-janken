@@ -1,1 +1,1 @@
-# Stats module tests
+# 統計テストモジュール

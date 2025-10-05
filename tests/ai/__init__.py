@@ -1,1 +1,1 @@
-# AI module tests
+# AIテストモジュール
