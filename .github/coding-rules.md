@@ -145,39 +145,25 @@ class TestRockPaperScissorsEngine(unittest.TestCase):
 
 ### コミットメッセージ
 ```bash
-# 必須：絵文字 + 簡潔な説明
-✨ 新しいAI戦略クラスを追加
-🐛 パターン学習のバグを修正
-🧪 統合テストを追加
-📝 APIドキュメントを更新
-♻️ ゲームエンジンをリファクタリング
+# プレフィックス + 簡潔な説明（英語または日本語）
+feat: 新しいAI戦略クラスを追加
+fix: パターン学習のバグを修正
+test: 統合テストを追加
+docs: APIドキュメントを更新
+refactor: ゲームエンジンをリファクタリング
 ```
 
-### 絵文字ガイド
-- `✨` 新機能
-- `🐛` バグ修正
-- `🧪` テスト追加・修正
-- `📝` ドキュメント
-- `♻️` リファクタリング
-- `⚡` パフォーマンス改善
-- `🔧` 設定・ツール
-- `🎨` UI・スタイル改善
-- `📦` 依存関係・パッケージ管理
-- `🧹` コードクリーンアップ
-
-### 絵文字コミット環境設定
-Windows環境でGitHubに絵文字が正しく表示されるよう、以下の設定を推奨：
-
-```bash
-# ターミナルをUTF-8に設定
-chcp 65001
-
-# Git Unicode正規化設定
-git config --global core.precomposeunicode true
-git config --global core.quotepath false
-git config --global i18n.commitencoding utf-8
-git config --global i18n.logoutputencoding utf-8
-```
+### コミットプレフィックス
+- `feat:` 新機能
+- `fix:` バグ修正
+- `test:` テスト追加・修正
+- `docs:` ドキュメント
+- `refactor:` リファクタリング
+- `perf:` パフォーマンス改善
+- `chore:` 設定・ツール・雑務
+- `style:` UI・スタイル・コードフォーマット
+- `build:` 依存関係・ビルドシステム
+- `clean:` コードクリーンアップ
 
 ## 📦 依存関係管理
 
