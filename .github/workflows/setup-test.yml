@@ -4,63 +4,63 @@ name: Environment Setup Test
 on:
   workflow_dispatch: # 手動実行のみ
   schedule:
-    - cron: '0 0 * * 1' # 毎週月曜日に実行
+    - cron: "0 0 * * 1" # 毎週月曜日に実行
 
 jobs:
   setup-test:
     name: 🔧 Test Dev Environment Setup
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: 📥 Checkout code
-      uses: actions/checkout@v4
-      
-    - name: 🐧 Test bash environment
-      run: |
-        echo "Testing bash environment compatibility..."
-        bash --version
-        
-    - name: 🐍 Setup Python environment
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.12'
-        
-    - name: 🔧 Test virtual environment creation
-      run: |
-        echo "Testing virtual environment setup..."
-        python -m venv .venv
-        source .venv/bin/activate
-        echo "Virtual environment activated: $VIRTUAL_ENV"
-        
-    - name: 📦 Test dependency installation
-      run: |
-        source .venv/bin/activate
-        pip install --upgrade pip
-        pip install -r requirements.txt
-        pip list
-        
-    - name: 🧪 Test complete workflow
-      run: |
-        source .venv/bin/activate
-        echo "Running complete test suite..."
-        python -m unittest discover tests -v
-        
-    - name: 🎮 Test application
-      run: |
-        source .venv/bin/activate
-        echo "Testing application startup..."
-        timeout 10s python main.py <<< "quit" || true
-        
-    - name: 📋 Generate setup report
-      run: |
-        echo "================================="
-        echo "🎯 Environment Setup Test Report"
-        echo "================================="
-        echo "✅ Bash environment: Ready"
-        echo "✅ Python 3.12: Ready"
-        echo "✅ Virtual environment: Ready"
-        echo "✅ Dependencies: Installed"
-        echo "✅ Tests: All passing"
-        echo "✅ Application: Functional"
-        echo "================================="
-        echo "🚀 Development environment is ready for new developers!"
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🐧 Test bash environment
+        run: |
+          echo "Testing bash environment compatibility..."
+          bash --version
+
+      - name: 🐍 Setup Python environment
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: 🔧 Test virtual environment creation
+        run: |
+          echo "Testing virtual environment setup..."
+          python -m venv .venv
+          source .venv/bin/activate
+          echo "Virtual environment activated: $VIRTUAL_ENV"
+
+      - name: 📦 Test dependency installation
+        run: |
+          source .venv/bin/activate
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          pip list
+
+      - name: 🧪 Test complete workflow
+        run: |
+          source .venv/bin/activate
+          echo "Running complete test suite..."
+          python -m unittest discover tests -v
+
+      - name: 🎮 Test application
+        run: |
+          source .venv/bin/activate
+          echo "Testing application startup..."
+          timeout 10s python main.py <<< "quit" || true
+
+      - name: 📋 Generate setup report
+        run: |
+          echo "================================="
+          echo "🎯 Environment Setup Test Report"
+          echo "================================="
+          echo "✅ Bash environment: Ready"
+          echo "✅ Python 3.12: Ready"
+          echo "✅ Virtual environment: Ready"
+          echo "✅ Dependencies: Installed"
+          echo "✅ Tests: All passing"
+          echo "✅ Application: Functional"
+          echo "================================="
+          echo "🚀 Development environment is ready for new developers!"

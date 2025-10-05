@@ -5,3 +5,7 @@ python-dotenv>=1.0.0
 
 # OpenAI API統合
 openai>=1.0.0
+
+# 開発・テスト・品質管理
+black>=22.0.0
+flake8>=4.0.0
