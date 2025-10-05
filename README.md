@@ -29,28 +29,28 @@ AI は戦略的なゲームプレイを行い、解説を提供し、プレイ�
 このプロジェクトは**Python仮想環境（venv）を必須**で使用します。
 
 #### クイックセットアップ
-```bat
-REM 1. 自動セットアップスクリプトを実行（推奨）
-setup-dev.bat
+```bash
+# 1. 自動セットアップスクリプトを実行（推奨）
+./setup-dev.sh
 
-REM 2. 手動セットアップの場合
+# 2. 手動セットアップの場合
 python -m venv .venv
-.venv\Scripts\activate.bat
+source .venv/Scripts/activate
 pip install -r requirements.txt
 ```
 
 #### 開発開始前（毎回必須）
-```bat
-REM 仮想環境をアクティベート
-.venv\Scripts\activate.bat
+```bash
+# 仮想環境をアクティベート
+source .venv/Scripts/activate
 
-REM プロンプトに (.venv) が表示されることを確認
+# プロンプトに (.venv) が表示されることを確認
 ```
 
 #### 環境チェック
-```bat
-REM 開発環境が正しく設定されているか確認
-check-env.bat
+```bash
+# 開発環境が正しく設定されているか確認
+./check-env.sh
 # リポジトリをクローン
 git clone https://github.com/konabe/llm-janken.git
 cd llm-janken

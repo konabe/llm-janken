@@ -1,5 +1,16 @@
-# AI コーディングエージェント向け Copilot 指示書
+# AI コーディングエージェント向け C## 🚨 開発環境の必須要件
 
+### Python仮想環境（venv）の使用必須
+- **すべての開発作業前に仮想環境をアクティベートすること**
+- bash: `source .venv/Scripts/activate` を実行
+- プロンプトに `(.venv)` が表示されることを必ず確認
+- `openai` パッケージなどの依存関係は仮想環境内にインストール済み
+
+### トラブルシューティングの基本
+- パッケージが見つからない → 仮想環境がアクティブか確認
+- Pythonコマンドエラー → 仮想環境の再アクティベート
+- bashスクリプトが動かない → 実行権限を確認するか、`bash setup-dev.sh`で直接実行
+- 詳細は `docs/dev-setup.md` を参照
 このプロジェクトは LLM を活用したじゃんけん（rock-paper-scissors）ゲームです。このコードベースで生産的に作業するため、以下のガイドラインに従ってください：
 
 - **プロジェクトの目的:** AI 対戦相手と競う戦略的じゃんけんゲーム
@@ -23,7 +34,7 @@ _This file should be updated as the project develops to reflect architecture, wo
 
 ### Python仮想環境（venv）の使用必須
 - **すべての開発作業前に仮想環境をアクティベートすること**
-- Windows: `.venv\Scripts\activate.bat` を実行
+- bash: `source .venv/Scripts/activate` を実行
 - プロンプトに `(.venv)` が表示されることを必ず確認
 - `openai` パッケージなどの依存関係は仮想環境内にインストール済み
 
@@ -41,7 +52,7 @@ _This file should be updated as the project develops to reflect architecture, wo
 # 開発の進め方
 
 ## 🔧 開発前チェックリスト（必須）
-1. **仮想環境のアクティベート**: `.venv\Scripts\activate.bat` 実行
+1. **仮想環境のアクティベート**: `source .venv/Scripts/activate` 実行
 2. **プロンプト確認**: `(.venv)` が表示されているか
 3. **依存関係確認**: `pip list` でopenaiパッケージが表示されるか
 
@@ -58,4 +69,4 @@ _This file should be updated as the project develops to reflect architecture, wo
 ## ⚠️ よくあるエラーとその対処
 - **「openaiパッケージが見つからない」**: 仮想環境を確認・再アクティベート
 - **「Pythonコマンドが見つからない」**: 仮想環境の再アクティベート
-- **バッチファイルが動かない**: 管理者権限で実行するか、`setup-dev.bat`を使用
+- **bashスクリプトが動かない**: 実行権限を確認するか、`bash setup-dev.sh`で直接実行

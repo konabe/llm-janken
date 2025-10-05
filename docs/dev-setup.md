@@ -6,58 +6,58 @@
 
 このプロジェクトはPython仮想環境（venv）を使用します。**開発作業前に毎回以下を実行してください：**
 
-#### Windows（コマンドプロンプト/バッチ）での仮想環境操作
-```bat
-REM 1. 仮想環境の作成（初回のみ）
+#### bash環境での仮想環境操作
+```bash
+# 1. 仮想環境の作成（初回のみ）
 python -m venv .venv
 
-REM 2. 仮想環境のアクティベート（毎回必須）
-.venv\Scripts\activate.bat
+# 2. 仮想環境のアクティベート（毎回必須）
+source .venv/Scripts/activate
 
-REM 3. 依存関係のインストール
+# 3. 依存関係のインストール
 pip install -r requirements.txt
 
-REM 4. 仮想環境がアクティブかどうかの確認
-REM プロンプトに (.venv) が表示されていればOK
+# 4. 仮想環境がアクティブかどうかの確認
+# プロンプトに (.venv) が表示されていればOK
 ```
 
 #### 仮想環境トラブルシューティング
 
 **問題1: openaiパッケージが見つからない**
-```bat
-REM 仮想環境がアクティブか確認（(.venv) がプロンプトにあるか）
-REM アクティブでない場合は再アクティベート
-.venv\Scripts\activate.bat
-REM 依存関係を再インストール
+```bash
+# 仮想環境がアクティブか確認（(.venv) がプロンプトにあるか）
+# アクティブでない場合は再アクティベート
+source .venv/Scripts/activate
+# 依存関係を再インストール
 pip install -r requirements.txt
 ```
 
 **問題2: Pythonコマンドが見つからない**
-```bat
-REM 仮想環境内のPythonを直接指定
-.venv\Scripts\python.exe main.py
+```bash
+# 仮想環境内のPythonを直接指定
+.venv/Scripts/python main.py
 ```
 
 **問題3: 自動セットアップを使いたい場合**
-```bat
-REM 自動セットアップスクリプトを実行
-setup-dev.bat
+```bash
+# 自動セットアップスクリプトを実行
+./setup-dev.sh
 ```
 
 #### 開発セッションの正しい手順
-```bat
-REM 1. プロジェクトディレクトリに移動
-cd c:\Users\rtkon\workspace\llm-janken
+```bash
+# 1. プロジェクトディレクトリに移動
+cd /c/Users/rtkon/workspace/llm-janken
 
-REM 2. 仮想環境をアクティベート（必須）
-.venv\Scripts\activate.bat
+# 2. 仮想環境をアクティベート（必須）
+source .venv/Scripts/activate
 
-REM 3. プロンプトに (.venv) が表示されることを確認
+# 3. プロンプトに (.venv) が表示されることを確認
 
-REM 4. 開発作業を開始
-python main.py                         REM アプリ実行
-python -m unittest discover tests -v   REM テスト実行
-pip install パッケージ名                REM 新しいパッケージのインストール
+# 4. 開発作業を開始
+python main.py                         # アプリ実行
+python -m unittest discover tests -v   # テスト実行
+pip install パッケージ名                # 新しいパッケージのインストール
 ```
 
 #### VSCode統合設定
