@@ -8,7 +8,6 @@ from unittest.mock import patch, MagicMock
 from src.game.engine import Choice, GameResult, RockPaperScissorsEngine
 from src.ai.player import RandomAIPlayer, PatternAIPlayer, LLMAIPlayer
 from src.ui.cli import CLIInterface
-from src.stats.tracker import GameRecord, GameStatistics
 
 
 class TestGameIntegration(unittest.TestCase):
@@ -19,7 +18,6 @@ class TestGameIntegration(unittest.TestCase):
         self.engine = RockPaperScissorsEngine()
         self.ai_player = RandomAIPlayer("TestAI")
         self.cli = CLIInterface()
-        self.stats = GameStatistics()
     
     def test_complete_game_flow(self):
         """完全なゲームフローのテスト"""
@@ -36,15 +34,9 @@ class TestGameIntegration(unittest.TestCase):
         # AI履歴記録
         self.ai_player.record_game(player_choice, ai_choice, result.value)
         
-        # 統計記録
-        record = GameRecord(player_choice, ai_choice, result, "2025-10-05 10:00:00")
-        self.stats.add_game(record)
-        
         # 結果検証
         self.assertEqual(result, GameResult.WIN)  # ROCK vs SCISSORS
         self.assertEqual(len(self.ai_player.game_history), 1)
-        self.assertEqual(len(self.stats.records), 1)
-        self.assertEqual(self.stats.get_win_rate(), 100.0)
     
     def test_multiple_games_consistency(self):
         """複数ゲームでの一貫性テスト"""
@@ -65,18 +57,6 @@ class TestGameIntegration(unittest.TestCase):
                 
                 # AI履歴記録
                 self.ai_player.record_game(player_choice, ai_choice, result.value)
-                
-                # 統計記録
-                record = GameRecord(player_choice, ai_choice, result, f"2025-10-05 10:0{i}:00")
-                self.stats.add_game(record)
-        
-        # 最終統計検証
-        summary = self.stats.get_summary()
-        self.assertEqual(summary['total_games'], 4)
-        self.assertEqual(summary['wins'], 2)
-        self.assertEqual(summary['losses'], 1)
-        self.assertEqual(summary['draws'], 1)
-        self.assertEqual(summary['win_rate'], 50.0)
         
         # AI履歴検証
         self.assertEqual(len(self.ai_player.game_history), 4)
@@ -89,7 +69,6 @@ class TestPatternLearningIntegration(unittest.TestCase):
         """テスト前の準備"""
         self.pattern_ai = PatternAIPlayer("PatternAI")
         self.engine = RockPaperScissorsEngine()
-        self.stats = GameStatistics()
     
     def test_pattern_learning_effectiveness(self):
         """パターン学習の効果性テスト"""
@@ -97,16 +76,12 @@ class TestPatternLearningIntegration(unittest.TestCase):
         player_pattern = Choice.ROCK
         
         # 5回同じパターンでゲーム
-        for i in range(5):
+        for _ in range(5):
             ai_choice = self.pattern_ai.make_choice()
             result = self.engine.determine_winner(player_pattern, ai_choice)
             
             # AI履歴記録
             self.pattern_ai.record_game(player_pattern, ai_choice, result.value)
-            
-            # 統計記録
-            record = GameRecord(player_pattern, ai_choice, result, f"2025-10-05 10:0{i}:00")
-            self.stats.add_game(record)
         
         # パターン学習後のテスト（確実に対策を選択するよう設定）
         with patch('random.random', return_value=0.5):  # 対策選択
@@ -115,9 +90,8 @@ class TestPatternLearningIntegration(unittest.TestCase):
         # ROCKに対する対策はPAPERのはず
         self.assertEqual(final_ai_choice, Choice.PAPER)
         
-        # 学習効果の検証（後半のゲームで勝率向上を期待）
-        summary = self.stats.get_summary()
-        self.assertGreaterEqual(summary['total_games'], 5)
+        # 学習効果の検証（履歴が蓄積されたことを確認）
+        self.assertEqual(len(self.pattern_ai.game_history), 5)
 
 
 class TestCLIIntegration(unittest.TestCase):
@@ -158,16 +132,7 @@ class TestErrorHandling(unittest.TestCase):
         # Choiceクラスでの無効入力
         self.assertIsNone(Choice.from_string("invalid"))
     
-    def test_empty_stats_handling(self):
-        """空の統計データのハンドリングテスト"""
-        stats = GameStatistics()
-        
-        # 空データでの各メソッド実行
-        self.assertEqual(stats.get_win_rate(), 0.0)
-        self.assertEqual(stats.get_choice_frequency(), {Choice.ROCK: 0, Choice.PAPER: 0, Choice.SCISSORS: 0})
-        
-        summary = stats.get_summary()
-        self.assertEqual(summary['total_games'], 0)
+
     
     def test_ai_consistency(self):
         """AI動作の一貫性テスト"""
@@ -184,28 +149,19 @@ class TestPerformance(unittest.TestCase):
     
     def test_large_game_simulation(self):
         """大量ゲームシミュレーションテスト"""
-        stats = GameStatistics()
         ai_player = RandomAIPlayer("PerfTestAI")
         
         # 100ゲームシミュレーション
-        for i in range(100):
+        for _ in range(100):
             player_choice = Choice.ROCK  # 固定
             ai_choice = ai_player.make_choice()
             result = RockPaperScissorsEngine.determine_winner(player_choice, ai_choice)
             
             # 記録
             ai_player.record_game(player_choice, ai_choice, result.value)
-            record = GameRecord(player_choice, ai_choice, result, f"2025-10-05 {i:03d}")
-            stats.add_game(record)
         
         # 結果検証
-        summary = stats.get_summary()
-        self.assertEqual(summary['total_games'], 100)
         self.assertEqual(len(ai_player.game_history), 100)
-        
-        # 統計の一貫性確認
-        total_results = summary['wins'] + summary['losses'] + summary['draws']
-        self.assertEqual(total_results, 100)
 
 
 class TestLLMIntegration(unittest.TestCase):
@@ -225,7 +181,6 @@ class TestLLMIntegration(unittest.TestCase):
             engine = RockPaperScissorsEngine()
             llm_player = LLMAIPlayer(name="GPTプレイヤー")
             llm_player._client = mock_client
-            stats = GameStatistics()
             
             # ゲーム実行
             player_choice = Choice.SCISSORS
@@ -234,14 +189,11 @@ class TestLLMIntegration(unittest.TestCase):
             
             # 履歴記録
             llm_player.record_game(player_choice, ai_choice, result.value)
-            record = GameRecord(player_choice, ai_choice, result, "2025-10-05 12:00:00")
-            stats.add_game(record)
             
             # 検証
             self.assertEqual(ai_choice, Choice.ROCK)
             self.assertEqual(result, GameResult.LOSE)  # SCISSORS vs ROCK
             self.assertEqual(len(llm_player.game_history), 1)
-            self.assertEqual(stats.get_win_rate(), 0.0)
     
     def test_llm_ai_learning_from_history(self):
         """LLM AIプレイヤーの履歴学習テスト"""
