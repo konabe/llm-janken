@@ -24,3 +24,12 @@
   - 同期 CLI と潜在的な非同期 Web ゲームプレイの両方を計画
 
 _This file should be updated as the project develops to reflect architecture, workflows, and conventions._
+
+# 開発の進め方
+
+- コミットメッセージの先頭は必ず絵文字を含めてください。
+  - 例: `✨ 新しい AI 戦略を追加`, `🐛 バグ修正`, `📝 ドキュメント更新`
+- コーディングが終了したら、Problems タブを確認し、警告やエラーがないことを確認してください。
+- テストを実行してください。
+- テストが成功したら、コミットしてください。
+- テストが失敗したら、テストが成功するまで修正してください。
