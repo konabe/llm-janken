@@ -8,6 +8,11 @@ on:
     branches: [master, main]
   workflow_dispatch: # 手動実行を許可
 
+# 権限設定
+permissions:
+  contents: write
+  actions: read
+
 # 環境変数
 env:
   PYTHON_VERSION: "3.12"
