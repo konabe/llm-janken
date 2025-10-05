@@ -32,14 +32,16 @@ cd llm-janken
 pyenv install 3.11.0
 pyenv local 3.11.0
 
-# 仮想環境を作成
-python -m venv venv
+# 仮想環境を作成（.venv を使用）
+python -m venv .venv
 
 # 仮想環境を有効化
 # Windows (Git Bash)
-source venv/Scripts/activate
+source .venv/Scripts/activate
+# Windows (PowerShell)
+.venv\Scripts\Activate.ps1
 # macOS/Linux
-source venv/bin/activate
+source .venv/bin/activate
 
 # 依存関係をインストール
 pip install --upgrade pip
@@ -55,14 +57,34 @@ cp .env.example .env
 # .env ファイルを編集して LLM API の認証情報を追加
 ```
 
+### 開発環境セットアップ（GitHub CLI）
+
+詳細な開発環境セットアップについては [`dev-setup.md`](dev-setup.md) を参照してください。
+
+```bash
+# GitHub CLIインストール（Windows）
+winget install --id GitHub.cli
+
+# パスを通す（一時的）
+export PATH="$PATH:/c/Program Files/GitHub CLI"
+
+# GitHubにログイン
+gh auth login
+
+# 推奨設定
+gh config set prompt disabled  # 自動承認
+```
+
 ### ゲーム実行
 
 ```bash
 # 仮想環境が有効化されていることを確認
 # Windows (Git Bash)
-source venv/Scripts/activate
+source .venv/Scripts/activate
+# Windows (PowerShell)  
+.venv\Scripts\Activate.ps1
 # macOS/Linux
-source venv/bin/activate
+source .venv/bin/activate
 
 # ゲームを実行
 python main.py
