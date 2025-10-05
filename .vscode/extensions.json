@@ -1,0 +1,22 @@
+{
+    "recommendations": [
+        // Python開発の基本
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-python.debugpy",
+        
+        // テスト支援
+        "ms-toolsai.jupyter",
+        
+        // Git・GitHub統合
+        "github.vscode-github-actions",
+        "github.vscode-pull-request-github",
+        "mhutchie.git-graph",
+        
+        // 開発効率向上
+        "redhat.vscode-yaml",
+        "editorconfig.editorconfig",
+        "gruntfuggly.todo-tree",
+        "alefragnani.project-manager"
+    ]
+}

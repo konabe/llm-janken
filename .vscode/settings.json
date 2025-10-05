@@ -38,8 +38,31 @@
   "shellformat.path": "C:\\Program Files\\Git\\bin\\bash.exe",
   "files.eol": "\n",
   "files.defaultLanguage": "markdown",
+  // Python フォーマッター設定 (Black)
+  "python.formatting.provider": "black",
+  "python.formatting.blackArgs": [
+    "--line-length=88",
+    "--skip-string-normalization"
+  ],
+  "[python]": {
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
+  },
+  
+  // Python リンター設定 (Flake8)
   "python.linting.enabled": true,
   "python.linting.pylintEnabled": false,
   "python.linting.flake8Enabled": true,
-  "python.formatting.provider": "black"
+  "python.linting.flake8Args": [
+    "--max-line-length=127",
+    "--extend-ignore=E203,W503",
+    "--max-complexity=10"
+  ],
+  "python.linting.lintOnSave": true,
+  
+  // Python その他の設定
+  "python.analysis.autoImportCompletions": true,
+  "python.analysis.typeCheckingMode": "basic"
 }
