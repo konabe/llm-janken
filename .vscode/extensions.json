@@ -1,0 +1,14 @@
+{
+  "recommendations": [
+    "ms-python.python",
+    "ms-python.debugpy",
+    "ms-python.flake8",
+    "ms-python.black-formatter",
+    "GitHub.copilot",
+    "GitHub.copilot-chat",
+    "mads-hartmann.bash-ide-vscode",
+    "timonwong.shellcheck",
+    "foxundermoon.shell-format",
+    "ms-vscode.vscode-json"
+  ]
+}

@@ -58,6 +58,62 @@
         "panel": "shared"
       },
       "problemMatcher": []
+    },
+    {
+      "label": "環境チェック",
+      "type": "shell",
+      "command": "bash",
+      "args": ["check-env.sh"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "開発環境セットアップ",
+      "type": "shell",
+      "command": "bash",
+      "args": ["setup-dev.sh"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "テスト実行",
+      "type": "shell",
+      "command": "python",
+      "args": ["-m", "unittest", "discover", "tests", "-v"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "アプリ実行",
+      "type": "shell",
+      "command": "python",
+      "args": ["main.py"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared"
+      },
+      "problemMatcher": []
     }
   ]
 }
