@@ -1,0 +1,88 @@
+# LLM じゃんけん
+
+大規模言語モデル（LLM）を活用したじゃんけんゲーム。
+
+## 概要
+
+このプロジェクトは、プレイヤーが LLM を搭載した AI 対戦相手と競うじゃんけんゲームを実装します。
+AI は戦略的なゲームプレイを行い、解説を提供し、プレイヤーのパターンに基づいて戦略を適応させることができます。
+また、AI はプレイヤーの心理をうまく利用して、じゃんけんの前にあらかじめ文章を提示することもできます。
+
+## 機能
+
+- LLM 対戦相手とのインタラクティブなじゃんけんゲーム
+- 多言語サポート（英語/日本語）
+
+## はじめに
+
+### 前提条件
+
+- pyenv（Python バージョン管理）
+- Python 3.8+ （pyenv でインストール）
+- OpenAIのAPI アクセス
+
+### インストール
+
+```bash
+# リポジトリをクローン
+git clone https://github.com/konabe/llm-janken.git
+cd llm-janken
+
+# Python バージョンを確認・インストール（例：Python 3.11）
+pyenv install 3.11.0
+pyenv local 3.11.0
+
+# 仮想環境を作成
+python -m venv venv
+
+# 仮想環境を有効化
+# Windows (Git Bash)
+source venv/Scripts/activate
+# macOS/Linux
+source venv/bin/activate
+
+# 依存関係をインストール
+pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+### 設定
+
+環境設定をコピーして API キーを追加：
+
+```bash
+cp .env.example .env
+# .env ファイルを編集して LLM API の認証情報を追加
+```
+
+### ゲーム実行
+
+```bash
+# 仮想環境が有効化されていることを確認
+# Windows (Git Bash)
+source venv/Scripts/activate
+# macOS/Linux
+source venv/bin/activate
+
+# ゲームを実行
+python main.py
+```
+
+## アーキテクチャ
+
+- **ゲームエンジン**: コアじゃんけんロジックとルール実行
+- **LLM 統合**: AI プレイヤー戦略と自然言語インタラクション
+- **UI レイヤー**: コマンドラインインターフェース（Web UI 拡張可能）
+- **統計**: ゲーム履歴とパターン分析
+
+## 貢献
+
+1. リポジトリをフォーク
+2. 機能ブランチを作成（`git checkout -b feature/amazing-feature`）
+3. 変更をコミット（`git commit -m 'Add some amazing feature'`）
+4. ブランチにプッシュ（`git push origin feature/amazing-feature`）
+5. プルリクエストを開く
+
+## ライセンス
+
+このプロジェクトは MIT ライセンスの下でライセンスされています - 詳細は [LICENSE](LICENSE) ファイルを参照してください。
