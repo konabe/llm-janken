@@ -115,10 +115,8 @@ class LLMAIPlayer(AIPlayer):
         if self.game_history:
             history_text = "\n過去のゲーム履歴:\n"
             # 最新の履歴のみを使用
-            recent_history = self.game_history[-self.max_history:]
-            for i, (player_choice, ai_choice, result) in enumerate(
-                recent_history, 1
-            ):
+            recent_history = self.game_history[-self.max_history :]
+            for i, (player_choice, ai_choice, result) in enumerate(recent_history, 1):
                 history_text += (
                     f"{i}. プレイヤー: {player_choice.name.lower()}, "
                     f"あなた: {ai_choice.name.lower()}, 結果: {result}\n"
