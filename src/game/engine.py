@@ -12,6 +12,9 @@ class Choice(Enum):
     @classmethod
     def from_string(cls, choice: str) -> Optional["Choice"]:
         """文字列からChoiceを生成"""
+        if not isinstance(choice, str):
+            return None
+
         choice_map = {
             # 英語
             "rock": cls.ROCK,

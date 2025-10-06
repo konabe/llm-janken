@@ -29,6 +29,15 @@ else
     echo "💡 Please run: pip install -r requirements.txt"
 fi
 
+# 5. Pytest check
+python -c "import pytest; print('✅ Pytest: Available')" 2>/dev/null
+if [ $? -eq 0 ]; then
+    echo "✅ Pytest: Package available"
+else
+    echo "❌ Pytest: Package not found"
+    echo "💡 Please run: pip install pytest"
+fi
+
 # 4. Project files check
 files=("src/ai/player.py" "main.py" "requirements.txt")
 echo "📁 Important files check..."

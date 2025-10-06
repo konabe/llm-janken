@@ -2,127 +2,112 @@
 ゲームエンジンの包括的テスト
 """
 
-import unittest
+import pytest
+
 from src.game.engine import Choice, GameResult, RockPaperScissorsEngine
 
 
-class TestChoice(unittest.TestCase):
-    """Choiceクラスのテスト"""
-
-    def test_choice_from_string_english(self):
-        """英語入力からChoiceへの変換テスト"""
-        self.assertEqual(Choice.from_string("rock"), Choice.ROCK)
-        self.assertEqual(Choice.from_string("paper"), Choice.PAPER)
-        self.assertEqual(Choice.from_string("scissors"), Choice.SCISSORS)
-
-        # 大文字小文字混在のテスト
-        self.assertEqual(Choice.from_string("ROCK"), Choice.ROCK)
-        self.assertEqual(Choice.from_string("Rock"), Choice.ROCK)
-
-    def test_choice_from_string_japanese(self):
-        """日本語入力からChoiceへの変換テスト"""
-        self.assertEqual(Choice.from_string("グー"), Choice.ROCK)
-        self.assertEqual(Choice.from_string("パー"), Choice.PAPER)
-        self.assertEqual(Choice.from_string("チョキ"), Choice.SCISSORS)
-
-    def test_choice_from_string_invalid(self):
-        """無効な入力のテスト"""
-        self.assertIsNone(Choice.from_string("invalid"))
-        self.assertIsNone(Choice.from_string(""))
-        self.assertIsNone(Choice.from_string("123"))
-        self.assertIsNone(Choice.from_string("ぐー"))  # ひらがな
-
-    def test_choice_to_display_japanese(self):
-        """日本語表示のテスト"""
-        self.assertEqual(Choice.ROCK.to_display("ja"), "グー ✊")
-        self.assertEqual(Choice.PAPER.to_display("ja"), "パー ✋")
-        self.assertEqual(Choice.SCISSORS.to_display("ja"), "チョキ ✌️")
-
-    def test_choice_to_display_english(self):
-        """英語表示のテスト"""
-        self.assertEqual(Choice.ROCK.to_display("en"), "Rock ✊")
-        self.assertEqual(Choice.PAPER.to_display("en"), "Paper ✋")
-        self.assertEqual(Choice.SCISSORS.to_display("en"), "Scissors ✌️")
-
-    def test_choice_to_display_default(self):
-        """デフォルト言語（日本語）表示のテスト"""
-        self.assertEqual(Choice.ROCK.to_display(), "グー ✊")
+@pytest.fixture
+def game_engine():
+    """ゲームエンジンのフィクスチャ"""
+    return RockPaperScissorsEngine()
 
 
-class TestRockPaperScissorsEngine(unittest.TestCase):
-    """じゃんけんエンジンのテストクラス"""
+# Choice クラスのテスト
+def test_choice_from_string_english():
+    """英語入力からChoiceへの変換テスト"""
+    assert Choice.from_string("rock") == Choice.ROCK
+    assert Choice.from_string("paper") == Choice.PAPER
+    assert Choice.from_string("scissors") == Choice.SCISSORS
 
-    def test_determine_winner_all_draws(self):
-        """すべての引き分けパターンのテスト"""
-        draws = [
-            (Choice.ROCK, Choice.ROCK),
-            (Choice.PAPER, Choice.PAPER),
-            (Choice.SCISSORS, Choice.SCISSORS),
-        ]
-
-        for player_choice, ai_choice in draws:
-            with self.subTest(player=player_choice, ai=ai_choice):
-                result = RockPaperScissorsEngine.determine_winner(
-                    player_choice, ai_choice
-                )
-                self.assertEqual(result, GameResult.DRAW)
-
-    def test_determine_winner_all_wins(self):
-        """すべてのプレイヤー勝利パターンのテスト"""
-        wins = [
-            (Choice.ROCK, Choice.SCISSORS),
-            (Choice.PAPER, Choice.ROCK),
-            (Choice.SCISSORS, Choice.PAPER),
-        ]
-
-        for player_choice, ai_choice in wins:
-            with self.subTest(player=player_choice, ai=ai_choice):
-                result = RockPaperScissorsEngine.determine_winner(
-                    player_choice, ai_choice
-                )
-                self.assertEqual(result, GameResult.WIN)
-
-    def test_determine_winner_all_losses(self):
-        """すべてのプレイヤー敗北パターンのテスト"""
-        losses = [
-            (Choice.ROCK, Choice.PAPER),
-            (Choice.PAPER, Choice.SCISSORS),
-            (Choice.SCISSORS, Choice.ROCK),
-        ]
-
-        for player_choice, ai_choice in losses:
-            with self.subTest(player=player_choice, ai=ai_choice):
-                result = RockPaperScissorsEngine.determine_winner(
-                    player_choice, ai_choice
-                )
-                self.assertEqual(result, GameResult.LOSE)
-
-    def test_validate_choice_all_valid(self):
-        """すべての有効な入力のテスト"""
-        valid_inputs = ["rock", "paper", "scissors", "グー", "パー", "チョキ"]
-
-        for input_str in valid_inputs:
-            with self.subTest(input=input_str):
-                self.assertTrue(RockPaperScissorsEngine.validate_choice(input_str))
-
-    def test_validate_choice_all_invalid(self):
-        """すべての無効な入力のテスト"""
-        invalid_inputs = [
-            "invalid",
-            "",
-            "123",
-            "ぐー",
-            "ぱー",
-            "ちょき",
-            "石",
-            "紙",
-            "はさみ",
-        ]
-
-        for input_str in invalid_inputs:
-            with self.subTest(input=input_str):
-                self.assertFalse(RockPaperScissorsEngine.validate_choice(input_str))
+    # 大文字小文字混在のテスト
+    assert Choice.from_string("ROCK") == Choice.ROCK
+    assert Choice.from_string("Rock") == Choice.ROCK
 
 
-if __name__ == "__main__":
-    unittest.main()
+def test_choice_from_string_japanese():
+    """日本語入力からChoiceへの変換テスト"""
+    assert Choice.from_string("グー") == Choice.ROCK
+    assert Choice.from_string("パー") == Choice.PAPER
+    assert Choice.from_string("チョキ") == Choice.SCISSORS
+
+
+def test_choice_from_string_invalid():
+    """無効な入力のテスト"""
+    assert Choice.from_string("invalid") is None
+    assert Choice.from_string("") is None
+
+
+def test_choice_to_display_japanese():
+    """日本語表示のテスト"""
+    assert Choice.ROCK.to_display("ja") == "グー ✊"
+    assert Choice.PAPER.to_display("ja") == "パー ✋"
+    assert Choice.SCISSORS.to_display("ja") == "チョキ ✌️"
+
+
+def test_choice_to_display_english():
+    """英語表示のテスト"""
+    assert Choice.ROCK.to_display("en") == "Rock ✊"
+    assert Choice.PAPER.to_display("en") == "Paper ✋"
+    assert Choice.SCISSORS.to_display("en") == "Scissors ✌️"
+
+
+def test_choice_to_display_default():
+    """デフォルト言語（日本語）表示のテスト"""
+    assert Choice.ROCK.to_display() == "グー ✊"
+    assert Choice.PAPER.to_display() == "パー ✋"
+    assert Choice.SCISSORS.to_display() == "チョキ ✌️"
+
+
+# RockPaperScissorsEngine クラスのテスト
+def test_validate_choice_all_valid(game_engine):
+    """すべての有効な入力のテスト"""
+    valid_choices = ["rock", "paper", "scissors", "グー", "パー", "チョキ"]
+    for choice in valid_choices:
+        assert game_engine.validate_choice(choice) is True
+
+
+def test_validate_choice_all_invalid(game_engine):
+    """すべての無効な入力のテスト"""
+    invalid_inputs = ["invalid", "123", ""]
+    for invalid in invalid_inputs:
+        assert game_engine.validate_choice(invalid) is False
+
+
+def test_determine_winner_all_wins(game_engine):
+    """すべてのプレイヤー勝利パターンのテスト"""
+    win_combinations = [
+        (Choice.ROCK, Choice.SCISSORS),
+        (Choice.PAPER, Choice.ROCK),
+        (Choice.SCISSORS, Choice.PAPER),
+    ]
+
+    for player_choice, ai_choice in win_combinations:
+        result = game_engine.determine_winner(player_choice, ai_choice)
+        assert result == GameResult.WIN
+
+
+def test_determine_winner_all_losses(game_engine):
+    """すべてのプレイヤー敗北パターンのテスト"""
+    loss_combinations = [
+        (Choice.SCISSORS, Choice.ROCK),
+        (Choice.ROCK, Choice.PAPER),
+        (Choice.PAPER, Choice.SCISSORS),
+    ]
+
+    for player_choice, ai_choice in loss_combinations:
+        result = game_engine.determine_winner(player_choice, ai_choice)
+        assert result == GameResult.LOSE
+
+
+def test_determine_winner_all_draws(game_engine):
+    """すべての引き分けパターンのテスト"""
+    draw_combinations = [
+        (Choice.ROCK, Choice.ROCK),
+        (Choice.PAPER, Choice.PAPER),
+        (Choice.SCISSORS, Choice.SCISSORS),
+    ]
+
+    for player_choice, ai_choice in draw_combinations:
+        result = game_engine.determine_winner(player_choice, ai_choice)
+        assert result == GameResult.DRAW

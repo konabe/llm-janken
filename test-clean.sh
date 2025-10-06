@@ -4,4 +4,4 @@
 echo "🚫 __pycache__ 無効化でテスト実行中..."
 
 export PYTHONDONTWRITEBYTECODE=1
-python -B -m unittest discover tests -v
+PYTHONPATH=. python -B -m pytest tests -v

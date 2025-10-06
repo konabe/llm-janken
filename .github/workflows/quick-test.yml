@@ -28,7 +28,7 @@ jobs:
 
       - name: 🧪 Run basic tests
         run: |
-          python -m unittest discover tests -v
+          pytest tests -v
 
       - name: 🎮 Test application startup
         run: |

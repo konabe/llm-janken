@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "========================================"
-echo "🎮 LLM Rock-Paper-Scissors Dev Setup"  
+echo "🎮 LLM Rock-Paper-Scissors Dev Setup"
 echo "========================================"
 echo
 
@@ -38,7 +38,7 @@ echo "✅ Dependencies installation completed"
 
 echo
 echo "[4/4] 🧪 Running tests..."
-python -m unittest discover tests -v
+PYTHONPATH=. pytest tests -v
 if [ $? -ne 0 ]; then
     echo "⚠️  Warning: Some tests failed"
 else
