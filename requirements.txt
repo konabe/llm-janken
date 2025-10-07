@@ -6,7 +6,13 @@ python-dotenv>=1.0.0
 # OpenAI API統合
 openai>=1.0.0
 
+# Web API フレームワーク
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+
 # 開発・テスト・品質管理
 pytest>=7.0.0
+pytest-asyncio>=0.23.0  # 非同期テスト用
+httpx>=0.25.0  # API テスト用
 black>=22.0.0
 flake8>=4.0.0
